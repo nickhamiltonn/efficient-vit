@@ -414,6 +414,14 @@ def main(args):
     start_time = time.time()
     max_accuracy = 0.0
     for epoch in range(args.start_epoch, args.epochs):
+        total_time = time.time() - start_time
+        total_time_min = str(datetime.timedelta(minutes=int(total_time)))
+        print('Training time in minutes: {}'.format(total_time_str))
+        
+        if total_time_min >= 2:
+            print(f'We are terminating training. Last attempted epoch = {epoch}')
+            continue
+        
         if args.distributed:
             data_loader_train.sampler.set_epoch(epoch)
 
