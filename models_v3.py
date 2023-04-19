@@ -242,20 +242,24 @@ class ConfigurableVisionTransformer(nn.Module):
 
 
 @register_model
-def baselineViT_small_patch16_224(**kwargs):
+def baselineViT_small_patch16_224(pretrained=False, **kwargs):
     model = ConfigurableVisionTransformer(
         patch_size=16, embed_dim=384, depth=12, num_heads=6, mlp_ratio=4, qkv_bias=True,
         norm_layer=partial(nn.LayerNorm, eps=1e-6), block_layer=Block, **kwargs)
     model.default_cfg = _cfg()
+    if pretrained:
+        raise NotImplemented("No pretrained weights for this model are available!")
     return model
 
 
 @register_model
-def localViT_small_patch16_224(**kwargs):
+def localViT_small_patch16_224(pretrained=False, **kwargs):
     model = ConfigurableVisionTransformer(
         patch_size=16, embed_dim=384, depth=12, num_heads=6, mlp_ratio=4, qkv_bias=True,
         norm_layer=partial(nn.LayerNorm, eps=1e-6), block_layer=LocalityBlock, act_layer=nn.Hardswish, **kwargs)
     model.default_cfg = _cfg()
+    if pretrained:
+        raise NotImplemented("No pretrained weights for this model are available!")
     return model
 
 
