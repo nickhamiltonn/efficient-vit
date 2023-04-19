@@ -25,6 +25,7 @@ from augment import new_data_aug_generator
 
 import models
 import models_v2
+import models_v3
 
 import utils
 

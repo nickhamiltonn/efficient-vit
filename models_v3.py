@@ -9,6 +9,11 @@ from timm.models.registry import register_model
 from timm.models.layers import DropPath, trunc_normal_
 
 
+__all__ = [
+    'baselineViT_small_patch16_224', 'localViT_small_patch16_224'
+]
+
+
 class ConvFFN(nn.Module):
     def __init__(self, in_features, hidden_features=None, out_features=None, act_layer=nn.Hardswish, drop=0., kernel_size=3):
         super().__init__()
