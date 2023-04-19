@@ -110,7 +110,7 @@ class ConvFFN(nn.Module):
 
         # inbetween our 2 layers we need to do our conv... plus our ImToSeq + SeqToIm
         self.conv = nn.Conv2d(hidden_features, hidden_features, kernel_size, 1, kernel_size // 2, groups=hidden_features, bias=False)
-        self.layer_norm = nn.LayerNorm(hidden_features)
+        # self.layer_norm = nn.LayerNorm([hidden_features, , ])
 
         self.fc2 = nn.Linear(hidden_features, out_features)
         self.drop = nn.Dropout(drop)
@@ -130,7 +130,7 @@ class ConvFFN(nn.Module):
         x = x.transpose(1, 2).view(batch_size, hidden_features, patch_size, patch_size)
 
         x = self.conv(x)
-        x = self.layer_norm(x)
+        # x = self.layer_norm(x)
         x = self.act(x)
 
 
