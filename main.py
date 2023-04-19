@@ -413,13 +413,19 @@ def main(args):
     print(f"Start training for {args.epochs} epochs")
     start_time = time.time()
     max_accuracy = 0.0
+    skip_remainder = False
     for epoch in range(args.start_epoch, args.epochs):
+        if skip_remainder:
+            continue
+
         total_time = time.time() - start_time
-        total_time_min = str(datetime.timedelta(minutes=int(total_time)))
-        print('Training time in minutes: {}'.format(total_time_str))
+        total_time_min = total_time / 60
+        total_time_hr = total_time_min / 60
+        print('Training time in minutes: {}'.format(total_time_min))
         
-        if total_time_min >= 2:
+        if total_time_hr >= 24:
             print(f'We are terminating training. Last attempted epoch = {epoch}')
+            skip_remainder = True
             continue
         
         if args.distributed:

@@ -1,1 +1,55 @@
-Things that i have changed in my fork
+My VM:
+- 1 NVIDIA V100
+- n1-standard-4 (4vCPUs, 15gb)
+- image: Debian 10 based Deep Learning VM for PyTorch CPU/GPU with CUDA 11.3 M107 (PyTorch 1.12)
+- $1.88 / hr
+
+
+My Command:
+
+Before doing this need to make sure I am:
+	- Creating dir at /mnt/disks/disk2/runs/{NAME_OF_RUN}
+	- running `sudo chmod a+rwx /mnt/disks/disk2/runs/{NAME_OF_RUN}`
+	- BROOOOOO I FUCKED UP THE LEARNING RATE ITS SUPPOSED TO BE --lr 1e-3
+python -m torch.distributed.launch --nproc_per_node=1 --use_env main.py --model deit_small_patch16_224 --batch-size 64 --lr 1e-4 --warmup-epochs 0 --data-path /mnt/disks/disk2/imagenet --output_dir /mnt/disks/disk2/runs/{NAME_OF_RUN}
+
+
+
+Things I have done:
+
+Need to make sure VM is setup with:
+ - GPU (https://cloud.google.com/compute/docs/gpus/create-gpu-vm-accelerator-optimized)
+	- turns out google's Deep Learning GPU image has too old a CUDA version for the L4 (https://cloud.google.com/compute/docs/gpus/install-drivers-gpu), and for some reason I can't get the T4 to even let me create an instance due to unavailability...
+ - persistent disk (https://cloud.google.com/compute/docs/disks/add-persistent-disk#create_disk)
+ - ssh stuff (new ssh keys in ~/.ssh)
+ - actually need to use the 2vcpu version or else I run out of memory...
+
+Stupid fucking bug in GCP that prevents me from creating disks cause it thinks I am at a hard limit that I am not at. Fuckkkkkk
+
+I need to actually install timm==0.4.12
+(https://github.com/facebookresearch/deit/issues/206) cause torch._six is deprecated...
+	
+Rest can be installed on my instance fairly normally thooo...
+ - install git, wget, tmux, then install condo using (https://medium.com/google-cloud/set-up-anaconda-under-google-cloud-vm-on-windows-f71fc1064bd7)
+	- actually that is a lie I should be using the GCP machine image instead
+ - then install everything from the edit repo description
+	- actually that is a lie... following the repo gives me PyTorch 2.0.0 which requires CUDA 11.7, but the image only have CUDA 11.3 (https://pytorch.org/blog/deprecation-cuda-python-support/). Maybe try (https://pytorch.org/get-started/previous-versions/)
+	- command is: conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.6 -c pytorch -c nvidia
+	- this didn't work (also supposed to be 1.12) but I realized I could use a image with PyTorch
+		-c2-deeplearning-pytorch-1-11-cu113-v20220701-debian-10
+ - create a machine image when I get this working ??
+
+I needed to write a script to preprocess all of the validation images from ImageNet into their respective folders...
+ - format_imgnet_val.py
+ - https://github.com/tensorflow/models/blob/master/research/slim/datasets/imagenet_2012_validation_synset_labels.txt contains labels
+ - images look like "ILSVRC2012_val_00024995.JPEG" in VM
+ - I fucked up and my dirs looked like 'n12345678'$'\n'
+	- wrote a script to fix this too, fix_directories.py or something
+
+
+Also using ImageNet-100 as a smaller subset test
+ - https://www.kaggle.com/datasets/ambityga/imagenet100
+
+
+Things that i have changed in my fork:
+
