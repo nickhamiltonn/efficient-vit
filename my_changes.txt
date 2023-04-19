@@ -10,8 +10,10 @@ My Command:
 Before doing this need to make sure I am:
 	- Creating dir at /mnt/disks/disk2/runs/{NAME_OF_RUN}
 	- running `sudo chmod a+rwx /mnt/disks/disk2/runs/{NAME_OF_RUN}`
-	- BROOOOOO I FUCKED UP THE LEARNING RATE ITS SUPPOSED TO BE --lr 1e-3
-python -m torch.distributed.launch --nproc_per_node=1 --use_env main.py --model deit_small_patch16_224 --batch-size 64 --lr 1e-4 --warmup-epochs 0 --data-path /mnt/disks/disk2/imagenet --output_dir /mnt/disks/disk2/runs/{NAME_OF_RUN}
+	- My models are called
+		- baselineViT_small_patch16_224
+		- localViT_small_patch16_224
+python -m torch.distributed.launch --nproc_per_node=1 --use_env main.py --model deit_small_patch16_224 --batch-size 64 --lr 1e-3 --warmup-epochs 0 --data-path /mnt/disks/disk2/imagenet --output_dir /mnt/disks/disk2/runs/{NAME_OF_RUN}
 
 
 
